@@ -78,7 +78,3 @@ Dokumen ini merinci perubahan dan penambahan fitur dalam tabel **Sales Transacti
 - **UX/UI Improvements**:
   - **Caption "Salesperson Code"** diganti menjadi **"Salesperson"**.
   - **List Page untuk Sales Transactions** dibuat agar lebih mudah diakses.
-
----
-
-💡 **Catatan:** Pastikan semua perubahan diuji sebelum di-deploy ke production untuk memastikan akurasi data dan integrasi berjalan lancar. 🚀  
