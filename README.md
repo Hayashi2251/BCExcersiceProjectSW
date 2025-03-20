@@ -14,10 +14,6 @@
 3️⃣ **Create New Table: `Sales Transactions`**  
    - Buat tabel **Sales Transactions** dengan struktur sebagai berikut:
 
-Tasks:
-1	Create Enum Extension Extend Customer Group with additional option "Others".
-2	Create Enum Sales Type with option "Item", "G/L Account".
-3	Create New Table "Sales Transactions" with fields as below.
 | **Field Name**         | **Data Type**         | **Description**                 |
 |------------------------|----------------------|---------------------------------|
 | `Line No.` (PK)       | `Integer`            | Primary Key, nomor baris unik. |
