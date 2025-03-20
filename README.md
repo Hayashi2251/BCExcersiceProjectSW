@@ -1,9 +1,6 @@
 ﻿# Business Central Project to Excercise 3
-
- Created by Siloam Wahyu
-
-# 📌 Sales Transactions Enhancement
-
+---
+ _Created by Siloam Wahyu_
 Dokumen ini merinci perubahan dan penambahan fitur dalam tabel **Sales Transactions** serta integrasinya dengan halaman lain.
 
 ---
