@@ -1,6 +1,18 @@
 # BC Project Excercise 2
 
-Dalam directory AL_ENUM/CustomerGroup.Enum.al (yang sudah ada dari Project Excercise 1, bisa dihapus apabila extension-nya memang sudah terinstall)!
+## 📝 Tasks
+
+1️⃣ **Create Enum Extension**  
+   - Perluas enumerasi **Customer Group** dengan menambahkan opsi baru:  
+     - `"Others"`
+
+2️⃣ **Create Enum Sales Type**  
+   - Buat enumerasi **Sales Type** dengan opsi berikut:  
+     - `"Item"`
+     - `"G/L Account"`
+
+3️⃣ **Create New Table: `Sales Transactions`**  
+   - Buat tabel **Sales Transactions** dengan struktur sebagai berikut:
 
 Tasks:
 1	Create Enum Extension Extend Customer Group with additional option "Others".
