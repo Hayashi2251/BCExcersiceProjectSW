@@ -1,3 +1,9 @@
+// ======================================
+// Title: Sales Transaction Table
+// ID: 50100
+// Assignment: Project 2-3
+// ======================================
+
 table 50100 "Sales Transaction"
 {
     DataClassification = CustomerContent;
@@ -53,7 +59,7 @@ table 50100 "Sales Transaction"
 
     keys
     {
-        key(PK; "No.")
+        key(PK; "Line No.")
         {
             Clustered = true;
         }

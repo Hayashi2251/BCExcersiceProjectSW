@@ -1,3 +1,9 @@
+// ======================================
+// Title: Sales Type Enum
+// ID: 50102
+// Assignment: Project 2-2
+// ======================================
+
 enum 50102 "Sales Type Enum"
 {
     Extensible = true;

@@ -6,9 +6,12 @@
             "request": "launch",
             "type": "al",
             "environmentType": "OnPrem",
-            "server": "http://smesbc25.southeastasia.cloudapp.azure.com:8080/",
+            // "server": "http://192.168.100.199:8080/",
+            // "serverInstance": "BC252",
+            // "port": 7149,
+            "server": "http://smesbc25.southeastasia.cloudapp.azure.com/",
             "serverInstance": "BCDemo",
-            "port": 7249, // Special Port for BCDemo
+            "port": 7249,
             "authentication": "UserPassword",
             "startupObjectId": 22,
             "startupObjectType": "Page",
@@ -17,7 +20,8 @@
             "enableLongRunningSqlStatements": true,
             "enableSqlInformationDebugger": true,
             "tenant": "default",
-            "usePublicURLFromServer": true
+            "usePublicURLFromServer": true,
+            "schemaUpdateMode": "ForceSync",
         }
     ]
 }

@@ -17,12 +17,12 @@
   "idRanges": [
     {
       "from": 50100,
-      "to": 50149
+      "to": 55000
     }
   ],
   "resourceExposurePolicy": {
     "allowDebugging": true,
-    "allowDownloadingSource": true,
+    "allowDownloadingSource": false,
     "includeSourceInSymbolFile": true
   },
   "runtime": "14.0",
