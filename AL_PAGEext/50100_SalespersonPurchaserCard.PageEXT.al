@@ -1,3 +1,8 @@
+// ======================================
+// Title: Salesperson Card Page EXTENSION
+// ID: 50100
+// Assignment: Project 3-8
+// ======================================
 pageextension 50100 "Salesperson Card PageEXT" extends "Salesperson/Purchaser Card"
 {
     layout
@@ -7,130 +12,27 @@ pageextension 50100 "Salesperson Card PageEXT" extends "Salesperson/Purchaser Ca
             group("Sales Transaction")
             {
                 Caption = 'Sales Transaction';
-                // field("Sales Type Filter"; Rec."Sales Type Filter")
-                // {
-                //     ApplicationArea = All;
-
-                //     trigger OnValidate()
-                //     begin
-                //         UpdateSalesData();
-                //     end;
-                // }
-
-                // field("Total Sales"; Rec."Total Sales")
-                // {
-                //     ApplicationArea = All;
-                //     Editable = false;
-                //     Visible = ShowTotal;
-                // }
-
-                // field("Max Sales"; Rec."Max Sales")
-                // {
-                //     ApplicationArea = All;
-                //     Editable = false;
-                //     Visible = ShowMax;
-                // }
-
-                // field("Min Sales"; Rec."Min Sales")
-                // {
-                //     ApplicationArea = All;
-                //     Editable = false;
-                //     Visible = ShowMin;
-                // }
-
-                // field("Avg Sales"; Rec."Avg Sales")
-                // {
-                //     ApplicationArea = All;
-                //     Editable = false;
-                //     Visible = ShowAvg;
-                // }
-
-                // field("Sales Count"; Rec."Sales Count")
-                // {
-                //     ApplicationArea = All;
-                //     Editable = false;
-                //     Visible = ShowCount;
-                // }
-
-                // field("Sales Exist"; Rec."Sales Exist")
-                // {
-                //     ApplicationArea = All;
-                //     Editable = false;
-                //     Visible = ShowExist;
-                // }
                 field("Sales Type Filter"; Rec."Sales Type Filter")
                 {
                     ApplicationArea = All;
-                    trigger OnValidate()
-                    var
-                        SalesTransaction: Record "Sales Transaction";
-                        TotalSales, MaxSales, MinSales, AvgSales : Decimal;
-                        SalesCount: Integer;
-                    begin
-                        SalesTransaction.SetRange("Salesperson Code", Rec."Code");
 
-                        case Rec."Sales Type Filter" of
-                            Rec."Sales Type Filter"::"Total Sales":
-                                begin
-                                    SalesTransaction.CalcSums("Sales Amount");
-                                    varNilaiTempDecimal := SalesTransaction."Sales Amount";
-                                end;
-                            Rec."Sales Type Filter"::"Max Sales":
-                                begin
-                                    if SalesTransaction.FindSet() then begin
-                                        MaxSales := 0;
-                                        repeat
-                                            if SalesTransaction."Sales Amount" > MaxSales then
-                                                MaxSales := SalesTransaction."Sales Amount";
-                                        until SalesTransaction.Next() = 0;
-                                        varNilaiTempDecimal := MaxSales;
-                                    end;
-                                end;
-                            Rec."Sales Type Filter"::"Min Sales":
-                                begin
-                                    if SalesTransaction.FindSet() then begin
-                                        MinSales := SalesTransaction."Sales Amount";
-                                        repeat
-                                            if SalesTransaction."Sales Amount" < MinSales then
-                                                MinSales := SalesTransaction."Sales Amount";
-                                        until SalesTransaction.Next() = 0;
-                                        varNilaiTempDecimal := MinSales;
-                                    end;
-                                end;
-                            Rec."Sales Type Filter"::"Avg Sales":
-                                begin
-                                    TotalSales := 0;
-                                    SalesCount := 0;
-                                    if SalesTransaction.FindSet() then begin
-                                        repeat
-                                            TotalSales += SalesTransaction."Sales Amount";
-                                            SalesCount += 1;
-                                        until SalesTransaction.Next() = 0;
-                                        if SalesCount > 0 then
-                                            varNilaiTempDecimal := TotalSales / SalesCount;
-                                    end;
-                                end;
-                            Rec."Sales Type Filter"::"Sales Count":
-                                begin
-                                    SalesTransaction.SetFilter("Salesperson Code", Rec."Code");
-                                    varNilaiTempDecimal := SalesTransaction.Count;
-                                end;
-                            Rec."Sales Type Filter"::"Sales Exist":
-                                begin
-                                    if SalesTransaction.FindFirst() then begin
-                                        varNilaiTempDecimal := 1;
-                                    end else begin
-                                        varNilaiTempDecimal := 0;
-                                    end;
-                                end;
-                        end;
+                    trigger OnValidate()
+                    begin
+                        UpdateSalesData();
                     end;
                 }
 
-                field("Sales Data"; varNilaiTempDecimal)
+                group("Sales Info")
                 {
-                    ApplicationArea = All;
-                    Editable = false;
+                    Visible = ShowSalesField;
+                    Caption = 'Sales Info Data';
+                    Description = 'Sales Info Data from the Sales Type Filter';
+
+                    field("Sales Value"; SalesValue)
+                    {
+                        ApplicationArea = All;
+                        Editable = false;
+                    }
                 }
             }
         }
@@ -138,17 +40,12 @@ pageextension 50100 "Salesperson Card PageEXT" extends "Salesperson/Purchaser Ca
 
     actions
     {
-        // Add changes to page actions here
+        // Add changes to page actions here if needed
     }
 
     var
-        ShowTotal: Boolean;
-        ShowMax: Boolean;
-        ShowMin: Boolean;
-        ShowAvg: Boolean;
-        ShowCount: Boolean;
-        ShowExist: Boolean;
-        varNilaiTempDecimal: Decimal;
+        ShowSalesField: Boolean;
+        SalesValue: Decimal;
 
     trigger OnOpenPage()
     begin
@@ -157,13 +54,30 @@ pageextension 50100 "Salesperson Card PageEXT" extends "Salesperson/Purchaser Ca
 
     local procedure UpdateSalesData()
     begin
-        ShowTotal := Rec."Sales Type Filter" = Rec."Sales Type Filter"::"Total Sales";
-        ShowMax := Rec."Sales Type Filter" = Rec."Sales Type Filter"::"Max Sales";
-        ShowMin := Rec."Sales Type Filter" = Rec."Sales Type Filter"::"Min Sales";
-        ShowAvg := Rec."Sales Type Filter" = Rec."Sales Type Filter"::"Avg Sales";
-        ShowCount := Rec."Sales Type Filter" = Rec."Sales Type Filter"::"Sales Count";
-        ShowExist := Rec."Sales Type Filter" = Rec."Sales Type Filter"::"Sales Exist";
+        Rec.CalcFields("Total Sales", "Max Sales", "Min Sales", "Avg Sales", "Sales Count", "Sales Exist");
+        // Dihitung dulu flowfieldnya, baru ditampilkan
+        case Rec."Sales Type Filter" of
+            Rec."Sales Type Filter"::"Total Sales":
+                SalesValue := Rec."Total Sales";
+            Rec."Sales Type Filter"::"Max Sales":
+                SalesValue := Rec."Max Sales";
+            Rec."Sales Type Filter"::"Min Sales":
+                SalesValue := Rec."Min Sales";
+            Rec."Sales Type Filter"::"Avg Sales":
+                SalesValue := Rec."Avg Sales";
+            Rec."Sales Type Filter"::"Sales Count":
+                SalesValue := Rec."Sales Count";
+            Rec."Sales Type Filter"::"Sales Exist":
+                // SalesValue := Rec."Sales Exist";
+                if Rec."Sales Exist" then begin
+                    SalesValue := 1;
+                end else begin
+                    SalesValue := 0;
+                end;
+        end;
 
+        ShowSalesField := true;
+        Message('Nilai dari Record Filter ialah: %1, dan nilai dari variabel SalesValue ialah: %2', Rec."Sales Type Filter", Rec."Total Sales");
         CurrPage.Update();
     end;
 }

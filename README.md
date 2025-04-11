@@ -1,80 +1,79 @@
-﻿# Business Central Project to Excercise 3
----
- _Created by Siloam Wahyu_
-Dokumen ini merinci perubahan dan penambahan fitur dalam tabel **Sales Transactions** serta integrasinya dengan halaman lain.
+﻿# Project 4
+
+## Objective
+Menambahkan fitur baru terkait keanggotaan pelanggan (Member) dalam sistem Sales di Microsoft Dynamics 365 Business Central.
 
 ---
 
-## 📝 Tasks & Implementation Details
+## Task List
 
-### **1️⃣ Tambah Field "Description" ke Tabel Sales Transactions**
-- **Field Name**: `Description`
-- **Data Type**: `Text[100]`
-- **Fungsi**: 
-  - Secara otomatis terisi dengan **Description dari Table Item** atau **G/L Account Name** ketika field `No.` diperbarui.
-
----
-
-### **2️⃣ Tambah Field "Salesperson Name" ke Tabel Sales Transactions**
-- **Field Name**: `Salesperson Name`
-- **Data Type**: `Text[100]`
-- **Fungsi**: 
-  - **Tidak dapat diperbarui oleh pengguna.**
-  - Secara otomatis dihitung oleh sistem berdasarkan **Salesperson Code**.
+### 1. Menambahkan Field "Member Nos." pada Sales & Receivable Setup
+- **Table**: `Sales & Receivables Setup`
+- **Page**: `Sales & Receivables Setup`
+- **Field**: `Member Nos.` (`Code[20]`)
+- **Fungsi**:
+  - Lookup ke `No. Series` untuk menentukan nomor keanggotaan (Member Nos.)
 
 ---
 
-### **3️⃣ Ubah Caption "Salesperson Code" menjadi "Salesperson"**
-- **Perubahan**: Label **Salesperson Code** pada tabel **Sales Transactions** akan diubah menjadi **Salesperson** untuk meningkatkan keterbacaan.
+### 2. Menambahkan Field "Member ID" pada Customer
+- **Table**: `Customer`
+- **Page**: `Customer Card`
+- **Field**: `Member ID` (`Code[20]`)
 
 ---
 
-### **4️⃣ Buat List Page untuk Sales Transactions**
-- **Sumber Data**: `Sales Transactions`
-- **Fungsi**: 
-  - Digunakan sebagai halaman utama ketika pengguna ingin melihat detail tabel **Sales Transactions** dari field lain di tabel lain.
+### 3. Menambahkan Action untuk Generate "Member ID"
+- **Page**: `Customer Card`
+- **Action**: `Generate Member ID`
+- **Fungsi**:
+  - Menggunakan function `GetNextNo` dari `Codeunit NoSeriesManagement`
+  - Mengambil dari `Member Nos.` di `Sales & Receivables Setup`
 
 ---
 
-### **5️⃣ Tambah Informasi Lookup di Item & Customer Tiles**
-#### 📌 **Lookup Item**  
-- Menampilkan informasi tambahan:
-  - **Costing Method**
-  - **Vendor No**
-  - **Vendor Item No.**
-
-#### 📌 **Customer Tiles**
-- Menampilkan informasi tambahan:
-  - **Responsibility Center**
-  - **Location Code**
-  - **Address**
-
----
-
-### **6️⃣ Tambah Fields dalam Tabel & Halaman Salesperson/Purchaser**
-#### 📌 **Fields yang Ditambahkan di Table & Page Salesperson/Purchaser Card (Tab Sales Transactions)**
-
-| **Field Name**        | **Fungsi** |
-|-----------------------|-----------|
-| `Sales Type Filter`   | Filter berdasarkan jenis Sales Type untuk perhitungan di bawah. |
-| `Total Sales`         | Total Sales Amount dalam Sales Transactions berdasarkan filter. |
-| `Max Sales`           | Nilai maksimum Sales Amount berdasarkan filter. |
-| `Min Sales`           | Nilai minimum Sales Amount berdasarkan filter. |
-| `Avg Sales`           | Nilai rata-rata Sales Amount berdasarkan filter. |
-| `Sales Count`         | Jumlah transaksi Sales berdasarkan filter. |
-| `Sales Exist`         | Menentukan apakah transaksi Sales ada untuk Salesperson dengan filter tertentu. |
-
-✅ **Semua field ini dihitung otomatis oleh sistem, tidak dapat diperbarui oleh pengguna.**
+### 4. Menambahkan Field "Member ID" di Dokumen Penjualan
+- **Tables**:
+  - `Sales Header`
+  - `Sales Header Archive`
+  - `Sales Shipment Header`
+  - `Sales Invoice Header`
+- **Pages**:
+  - `Sales Order`
+  - `Posted Sales Shipment`
+  - `Posted Sales Invoice`
+- **Field**: `Member ID` (`Code[20]`)
+- **Logic**:
+  - **Sales Order**: otomatis isi `Member ID` dari `Customer`
+  - **Posted Documents**: otomatis isi `Member ID` dari `Sales Order`
 
 ---
 
-## 🚀 **Implementation Notes**
-- **Otomatisasi & Lookup**:
-  - **Field Description** → Auto-fill dari **Item/G/L Account**.
-  - **Field Salesperson Name** → Auto-fill berdasarkan **Salesperson Code**.
-  - **Lookup Item & Customer** → Menampilkan informasi tambahan untuk referensi yang lebih jelas.
-  - **Sales Calculations** → Dihitung otomatis berdasarkan Sales Type Filter.
+### 5. Menambahkan Field "Discount Member %" pada Sales & Receivable Setup
+- **Table**: `Sales & Receivables Setup`
+- **Page**: `Sales & Receivables Setup`
+- **Field**: `Discount Member %` (`Decimal`)
 
-- **UX/UI Improvements**:
-  - **Caption "Salesperson Code"** diganti menjadi **"Salesperson"**.
-  - **List Page untuk Sales Transactions** dibuat agar lebih mudah diakses.
+---
+
+### 6. Menambahkan Field "Discount Member %" pada Sales Line
+- **Table**: `Sales Line`
+- **Page**: `Sales Order Subform`
+- **Field**: `Discount Member %` (`Decimal`)
+- **Logic**:
+  - Saat membuat baris Sales Order baru dan **Member ID tidak kosong**, isi `Discount Member %` dari `Sales & Receivables Setup`
+  - Jika **Type = Item** dan No. diisi/diubah:
+    - Isi `Discount Member %` dari `Sales & Receivables Setup`
+    - Isi `Line Discount %` dengan nilai dari `Discount Member %`
+
+---
+
+## Catatan Pengembangan
+- Pastikan semua field baru memiliki properti `Editable`, `Visible`, dan `ApplicationArea` yang sesuai.
+- Perhatikan trigger yang digunakan untuk mengisi otomatis seperti `OnValidate`, `OnInsert`, atau event publisher/subscriber.
+
+---
+
+```
+
+Kalau kamu sudah oke dengan struktur ini, next step tinggal kita breakdown satu-satu untuk implementasi AL-nya nanti. Mau lanjut ke coding atau ada tambahan/editan dulu di dokumennya? 💬
