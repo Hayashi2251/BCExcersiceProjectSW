@@ -75,5 +75,3 @@ Menambahkan fitur baru terkait keanggotaan pelanggan (Member) dalam sistem Sales
 ---
 
 ```
-
-Kalau kamu sudah oke dengan struktur ini, next step tinggal kita breakdown satu-satu untuk implementasi AL-nya nanti. Mau lanjut ke coding atau ada tambahan/editan dulu di dokumennya? 💬
