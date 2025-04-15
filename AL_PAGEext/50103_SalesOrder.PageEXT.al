@@ -19,7 +19,7 @@ pageextension 50103 "Sales Order PageEXT" extends "Sales Order"
 
     actions
     {
-        // Add changes to page actions here
+        // 
     }
 
     var

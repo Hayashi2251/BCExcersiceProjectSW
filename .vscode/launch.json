@@ -6,14 +6,14 @@
             "request": "launch",
             "type": "al",
             "environmentType": "OnPrem",
-            "server": "http://192.168.100.81:8080/",
-            "serverInstance": "BC252",
-            "port": 7149,
             // "server": "http://smesbc25.southeastasia.cloudapp.azure.com/",
             // "serverInstance": "BCDemo",
             // "port": 7249,
+            "server": "http://192.168.100.81",
+            "serverInstance": "BC252",
+            "port": 7149,
             "authentication": "UserPassword",
-            "startupObjectId": 9305,
+            "startupObjectId": 50105,
             "startupObjectType": "Page",
             "breakOnError": "All",
             "launchBrowser": true,
@@ -21,7 +21,7 @@
             "enableSqlInformationDebugger": true,
             "tenant": "default",
             "usePublicURLFromServer": true,
-            "schemaUpdateMode": "ForceSync",
-        }
+            "schemaUpdateMode": "ForceSync"
+        },
     ]
 }
